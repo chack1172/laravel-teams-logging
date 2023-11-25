@@ -13,18 +13,31 @@
 		"monolog/monolog": "^1.23|^2.0|^3.0"
 	},
 	"require-dev": {
-		"ext-curl": "*"
+		"ext-curl": "*",
+		"pestphp/pest": "^1.23.1",
+		"orchestra/testbench": ">=4.0",
+		"mockery/mockery": "^1.6"
 	},
 	"autoload": {
 		"psr-4": {
 			"MargaTampu\\LaravelTeamsLogging\\": "src/"
 		}
 	},
+    "autoload-dev": {
+        "psr-4": {
+            "MargaTampu\\LaravelTeamsLogging\\Tests\\": "tests"
+        }
+    },
 	"extra": {
 		"laravel": {
 			"providers": [
 				"MargaTampu\\LaravelTeamsLogging\\LoggerServiceProvider"
 			]
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"pestphp/pest-plugin": true
 		}
 	}
 }
