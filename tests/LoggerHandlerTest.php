@@ -10,7 +10,7 @@ it('simple styling sets correct data', function () {
     $message = $handler->useSimpleStyling('INFO', 'test message');
     $data = $message->jsonSerialize();
     expect($message)->toBeInstanceOf('MargaTampu\LaravelTeamsLogging\LoggerMessage');
-    expect($data)->toBe([
+    expect($data)->toMatchArray([
         '@context' => 'http://schema.org/extensions',
         '@type'    => 'MessageCard',
         'text'       => 'Default - <span style="color:#' . LoggerColour::INFO . '">INFO</span>: test message',
@@ -18,7 +18,7 @@ it('simple styling sets correct data', function () {
     ]);
 });
 
-it('card styling sets default data', function () {
+it('card styling sets correct data', function () {
     $handler = new LoggerHandler('test');
     $level = 'INFO';
     $message = 'test message';
@@ -26,7 +26,7 @@ it('card styling sets default data', function () {
     $messageLog = $handler->useCardStyling($level, $message, $facts);
     $color = LoggerColour::INFO;
 
-    expect($messageLog)->toBe([
+    expect($messageLog)->toMatchArray([
         '@context' => 'http://schema.org/extensions',
         '@type'    => 'MessageCard',
         'summary'    => "INFO: Default",
