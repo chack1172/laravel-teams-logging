@@ -47,10 +47,28 @@ class LoggerHandler extends AbstractProcessingHandler
                 $facts[] = ['name' => $name, 'value' => (string) $value];
             }
 
-            $facts = array_merge($facts, [[
+            $facts[] = [
                 'name'  => 'Sent Date',
                 'value' => date('D, M d Y H:i:s e'),
-            ]]);
+            ];
+
+            if (!app()->runningInConsole()) {
+                // Route
+                if (config('teams.show_route', false)) {
+                    $facts[] = [
+                        'name'  => 'Route',
+                        'value' => request()->getMethod() . ' : ' . request()->getPathInfo(),
+                    ];
+                }
+
+                // (Controller) Action
+                if (config('teams.show_action', false) && request()->route()) {
+                    $facts[] = [
+                        'name'  => 'Action',
+                        'value' => request()->route()->getActionName(),
+                    ];
+                }
+            }
 
             return $this->useCardStyling($record['level_name'], $record['message'], $facts);
         } else {
