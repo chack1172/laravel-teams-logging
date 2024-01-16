@@ -3,7 +3,6 @@
 use MargaTampu\LaravelTeamsLogging\LoggerAvatar;
 use MargaTampu\LaravelTeamsLogging\LoggerColour;
 use MargaTampu\LaravelTeamsLogging\LoggerHandler;
-use Monolog\LogRecord;
 
 it('simple styling sets correct data', function () {
     $handler = new LoggerHandler('test');
@@ -34,12 +33,47 @@ it('card styling sets correct data', function () {
         'sections'   => [
             [
                 'activityTitle'    => 'Default',
-                'activitySubtitle' => 'test message',
                 'facts'            => $facts,
                 'markdown'         => true,
                 'activityImage'    => LoggerAvatar::INFO,
                 'activitySubtitle' => '<span style="color:#' . $color . '">test message</span>',
             ]
         ],
+    ]);
+});
+
+it('sets correct card styling with avatars disabled', function () {
+    config()->set('teams.show_avatars', false);
+
+    $handler = new LoggerHandler('test');
+    $level = 'INFO';
+    $message = 'test message';
+    $facts = ['extra' => 'facts'];
+    $messageLog = $handler->useCardStyling($level, $message, $facts);
+    $color = LoggerColour::INFO;
+
+    expect($messageLog['sections'][0])->toMatchArray([
+        'activityTitle'    => 'Default',
+        'facts'            => $facts,
+        'markdown'         => true,
+        'activitySubtitle' => '<span style="color:#' . $color . '">test message</span>',
+    ]);
+});
+
+it('sets correct card styling with type disabled', function () {
+    config()->set('teams.show_type', false);
+
+    $handler = new LoggerHandler('test');
+    $level = 'INFO';
+    $message = 'test message';
+    $facts = ['extra' => 'facts'];
+    $messageLog = $handler->useCardStyling($level, $message, $facts);
+
+    expect($messageLog['sections'][0])->toMatchArray([
+        'activityTitle'    => 'Default',
+        'facts'            => $facts,
+        'markdown'         => true,
+        'activityImage'    => LoggerAvatar::INFO,
+        'activitySubtitle' => 'test message',
     ]);
 });
