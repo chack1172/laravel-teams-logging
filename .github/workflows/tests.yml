@@ -1,0 +1,38 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: [8.2, 8.1, 7.4]
+        monolog: [^1.0, ^2.0]
+        stability: [prefer-stable]
+
+    name: PHP ${{ matrix.php }} - Monolog ${{ matrix.monolog }} - ${{ matrix.stability }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: curl
+        coverage: none
+
+    - name: Install dependencies
+      run: |
+        composer require "monolog/monolog:${{ matrix.monolog }}" --no-interaction --no-update
+        composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+    - name: Run tests
+      run: ./vendor/bin/pest
