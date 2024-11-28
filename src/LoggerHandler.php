@@ -2,41 +2,23 @@
 
 namespace MargaTampu\LaravelTeamsLogging;
 
-use Monolog\Logger as MonologLogger;
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Level;
+use Monolog\LogRecord;
 
 class LoggerHandler extends AbstractProcessingHandler
 {
-    /** @var string */
-    private $url;
-
-    /** @var string */
-    private $style;
-
-    /** @var string */
-    private $name;
-
-    /**
-     * @param $url
-     * @param int $level
-     * @param string $name
-     * @param bool $bubble
-     */
-    public function __construct($url, $level = MonologLogger::DEBUG, $style = 'simple', $name = 'Default', $bubble = true)
-    {
+    public function __construct(
+        private string $url,
+        int|string|Level $level = Level::Debug,
+        private string $style = 'simple',
+        private string $name = 'Default',
+        bool $bubble = true
+    ) {
         parent::__construct($level, $bubble);
-
-        $this->url   = $url;
-        $this->style = $style;
-        $this->name  = $name;
     }
 
-    /**
-     * @param array $record
-     *
-     * @return LoggerMessage
-     */
-    protected function getMessage(array $record)
+    protected function getMessage(LogRecord $record): LoggerMessage
     {
         if ($this->style == 'card') {
             // Include context as facts to send to microsoft teams
@@ -109,13 +91,7 @@ class LoggerHandler extends AbstractProcessingHandler
         return $loggerMessage->jsonSerialize();
     }
 
-    /**
-     * Styling message as simple message
-     *
-     * @param String $name
-     * @param String $message
-     */
-    public function useSimpleStyling($name, $message)
+    public function useSimpleStyling(string $name, string $message): LoggerMessage
     {
         $loggerColour = new LoggerColour($name);
 
@@ -125,10 +101,7 @@ class LoggerHandler extends AbstractProcessingHandler
         ]);
     }
 
-    /**
-     * @param array $record
-     */
-    protected function write(array $record): void
+    protected function write(LogRecord $record): void
     {
         $json = json_encode($this->getMessage($record));
 

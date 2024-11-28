@@ -10,12 +10,12 @@
 	],
 	"require": {
 		"php": "^8.2",
-		"monolog/monolog": "^1.23|^2.0"
+		"monolog/monolog": "^3.0"
 	},
 	"require-dev": {
 		"ext-curl": "*",
-		"pestphp/pest": "^1.23.1",
-		"orchestra/testbench": ">=4.0",
+		"pestphp/pest": "^2.0",
+		"orchestra/testbench": ">=8.0",
 		"mockery/mockery": "^1.6"
 	},
 	"autoload": {
