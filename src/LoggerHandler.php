@@ -65,7 +65,7 @@ class LoggerHandler extends AbstractProcessingHandler
      * @param String $message
      * @param array  $facts
      */
-    public function useCardStyling($name, $message, $facts)
+    public function useCardStyling($name, $message, $facts): LoggerMessage
     {
         $loggerColour = new LoggerColour($name);
 
@@ -88,7 +88,7 @@ class LoggerHandler extends AbstractProcessingHandler
             ]
         ]);
 
-        return $loggerMessage->jsonSerialize();
+        return $loggerMessage;
     }
 
     public function useSimpleStyling(string $name, string $message): LoggerMessage
