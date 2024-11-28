@@ -12,7 +12,7 @@ class LoggerHandler extends AbstractProcessingHandler
         private string $url,
         int|string|Level $level = Level::Debug,
         private string $style = 'simple',
-        private string $name = 'Default',
+        private ?string $name = 'Default',
         bool $bubble = true
     ) {
         parent::__construct($level, $bubble);

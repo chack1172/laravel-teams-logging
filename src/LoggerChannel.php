@@ -2,7 +2,7 @@
 
 namespace MargaTampu\LaravelTeamsLogging;
 
-use Monolog\Logger as MonologLogger;
+use Monolog\Level;
 
 class LoggerChannel
 {
@@ -13,6 +13,6 @@ class LoggerChannel
      */
     public function __invoke(array $config)
     {
-        return new Logger($config['url'], $config['level'] ?? MonologLogger::DEBUG, $config['style'] ?? 'simple', $config['name'] ?? null);
+        return new Logger($config['url'], $config['level'] ?? Level::Debug, $config['style'] ?? 'simple', $config['name'] ?? null);
     }
 }

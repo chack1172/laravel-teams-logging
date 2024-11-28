@@ -33,3 +33,13 @@ it('offset unset', function () {
 
     expect($message->offsetGet('test'))->toBeNull();
 });
+
+it('json serialize', function () {
+    $message = new LoggerMessage(['test' => 'message']);
+
+    expect($message->jsonSerialize())->toEqual([
+        '@context' => 'http://schema.org/extensions',
+        '@type'    => 'MessageCard',
+        'test' => 'message',
+    ]);
+});
