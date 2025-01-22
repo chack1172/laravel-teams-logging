@@ -24,8 +24,13 @@ class LoggerHandler extends AbstractProcessingHandler
             // Include context as facts to send to microsoft teams
             // Added Sent Date Info
 
+            $exception = null;
             $facts = [];
             foreach($record['context'] as $name => $value){
+                if ($name == 'exception') {
+                    $exception = $value;
+                    continue;
+                }
                 $facts[] = ['name' => $name, 'value' => (string) $value];
             }
 
@@ -50,6 +55,11 @@ class LoggerHandler extends AbstractProcessingHandler
                         'value' => request()->route()->getActionName(),
                     ];
                 }
+            }
+
+            // Add exception as last
+            if ($exception) {
+                $facts[] = ['name' => 'exception', 'value' => (string) $exception];
             }
 
             return $this->useCardStyling($record['level_name'], $record['message'], $facts);
