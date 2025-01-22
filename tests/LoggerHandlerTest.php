@@ -23,9 +23,10 @@ it('card styling sets correct data', function () {
     $message = 'test message';
     $facts = ['extra' => 'facts'];
     $messageLog = $handler->useCardStyling($level, $message, $facts);
+    $data = $messageLog->jsonSerialize();
     $color = LoggerColour::INFO;
 
-    expect($messageLog)->toMatchArray([
+    expect($data)->toMatchArray([
         '@context' => 'http://schema.org/extensions',
         '@type'    => 'MessageCard',
         'summary'    => "INFO: Default",
