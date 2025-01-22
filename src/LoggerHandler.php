@@ -55,6 +55,14 @@ class LoggerHandler extends AbstractProcessingHandler
                         'value' => request()->route()->getActionName(),
                     ];
                 }
+
+                // Referer
+                if (config('teams.show_referer', false) && request()->hasHeader('Referer')) {
+                    $facts[] = [
+                        'name'  => 'Referer',
+                        'value' => request()->header('Referer'),
+                    ];
+                }
             }
 
             // Add exception as last
